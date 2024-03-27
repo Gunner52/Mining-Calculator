@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HOBAD Mining Calculator</title>
+<title>Mining Calculator</title>
 <style>
   /* CSS styles for the calculator layout */
   body {
@@ -103,14 +103,34 @@
   </div>
 
   <script>
-    // Function to format numbers with separator commas (same as previous code)
+    // Function to format numbers with separator commas
     function formatNumberWithCommas(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    // Function to calculate mining metrics (same as previous code)
+    // Function to calculate mining metrics
     function calculateMiningMetrics() {
-      // ...
+      let asteroidSize = parseFloat(document.getElementById('asteroid-size').value);
+      let valuePerM3 = parseFloat(document.getElementById('value-per-m3').value);
+      let laserSlot1Rate = parseFloat(document.getElementById('laser-slot-1-rate').value);
+      let laserSlot2Rate = parseFloat(document.getElementById('laser-slot-2-rate').value);
+      let droneRate = parseFloat(document.getElementById('drone-rate').value);
+      let numDrones = parseInt(document.getElementById('num-drones').value);
+
+      let totalMiningRate = laserSlot1Rate + laserSlot2Rate + (droneRate * numDrones);
+      let timeToMineSeconds = asteroidSize / totalMiningRate;
+      let iskPerHour = valuePerM3 * totalMiningRate * 3600;
+
+      let formattedTimeToMine = formatNumberWithCommas(timeToMineSeconds.toFixed(2));
+      let formattedIskPerHour = formatNumberWithCommas(iskPerHour.toFixed(2));
+      let formattedTotalMiningRate = formatNumberWithCommas(totalMiningRate.toFixed(2));
+
+      let outputResults = document.getElementById('output-results');
+      outputResults.innerHTML = `
+        <p>Time to Mine: ${formattedTimeToMine} seconds</p>
+        <p>ISK per Hour: ${formattedIskPerHour} ISK</p>
+        <p>Total Mining Rate: ${formattedTotalMiningRate} m^3/s</p>
+      `;
     }
   </script>
 </body>
